@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 
 function App() {
   const [tech, setTech] = useState([]);
@@ -15,19 +15,13 @@ function App() {
     if (storedTechs) {
       setTech(JSON.parse(storedTechs));
     }
-
-    /*
-    return () => {//code replaces componentWillUnmount routine}
-    */
   }, []);
 
   useEffect(() => {
     localStorage.setItem('techs', JSON.stringify(tech));
-
-    /*
-    return () => {//code replaces componentWillUnmount routine}
-    */
   }, [tech]);
+
+  const techSize = useMemo(() => tech.length, [tech]);
 
   return (
     <>
@@ -36,6 +30,8 @@ function App() {
           <li key={t}>{t}</li>
         ))}
       </ul>
+      <strong>You have {techSize} technologies added.</strong>
+      <br />
       <input value={newTech} onChange={e => setNewTech(e.target.value)} />
       <button type="button" onClick={handleAdd}>
         Add
